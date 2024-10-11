@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Scanner</string>
+    <string name="result_hint">Enter the result here</string>
+</resources>
