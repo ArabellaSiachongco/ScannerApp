@@ -1,0 +1,63 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Transaction Details"
+        android:textStyle="bold"
+        android:padding="5dp"
+        />
+
+    <TableLayout
+        android:id="@+id/tableLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="1"
+        android:padding="2dp"
+        android:background="@color/purple">
+
+        <!-- Header Row -->
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="8dp">
+
+            <!-- ID Column -->
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="start"
+                android:text="ID"
+                android:textStyle="bold"
+                android:padding="5dp" />
+
+            <!-- Name Column -->
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="Name"
+                android:textStyle="bold"
+                android:padding="5dp" />
+
+            <!-- Quantity Column -->
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="Quantity"
+                android:textStyle="bold"
+                android:padding="5dp" />
+        </TableRow>
+
+
+    </TableLayout>
+</LinearLayout>

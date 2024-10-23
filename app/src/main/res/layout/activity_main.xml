@@ -1,61 +1,48 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:background="@color/white"
-    >
-<!--the result will be updated here, pero dapat sa product list na gagawin pa natin-->
-<!--how to put the scan product name in the product list?-->
-    <EditText
-        android:id="@+id/result_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:minHeight="48dp"
-        android:textColor="@color/black"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="0dp"
-        android:hint="@string/result_hint"
-        />
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center">
 
     <TextView
+        android:id="@+id/result_text"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
-        android:layout_marginBottom="20sp"
-        android:fontFamily="@font/montserrat"
-        android:gravity="center"
-        android:paddingTop="20sp"
-        android:text="Scanned Your Product "
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
+        android:layout_height="564dp"
+        android:background="#e0e0e0"
+        android:gravity="top"
+        android:minHeight="200dp"
+        android:padding="10dp"
+        android:scrollbarStyle="insideOverlay"
+        android:scrollbars="vertical"
+        android:textColor="#000000"
+        android:textIsSelectable="true"
+        android:textSize="16sp"
+        android:visibility="gone"/>
 
     <Button
         android:id="@+id/btnScanBarcode"
-        android:layout_width="300dp"
+        android:layout_width="382dp"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="44dp"
-        android:background="@color/purple"
-        android:text="QR Scanner"
-        android:textColor="#212121"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_marginTop="16dp"
+        android:minHeight="48dp"
+        android:padding="16dp"
+        android:text="Scan Barcode"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/btnShowData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/transparent"
+        android:minHeight="48dp"
+        android:padding="0dp"
+        android:text="Show Stored Data"
+        android:textColor="@android:color/holo_purple"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
