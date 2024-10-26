@@ -16,7 +16,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    Button btnScanBarcode, btnShowData;
+    Button btnScanBarcode, btnShowData, saveButton;
     TextView resultText;
     ArrayList<String> scannedBarcodes;
     DatabaseHelper dbHelper;
@@ -24,14 +24,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main); // Make sure you're using the correct layout file
 
+        // Initialize UI components
         btnScanBarcode = findViewById(R.id.btnScanBarcode);
         resultText = findViewById(R.id.result_text);
         btnShowData = findViewById(R.id.btnShowData);
-        scannedBarcodes = new ArrayList<>();
-        dbHelper = new DatabaseHelper(this);
+        saveButton = findViewById(R.id.goToProductListButton); // The save button
 
+        scannedBarcodes = new ArrayList<>();
+        dbHelper = new DatabaseHelper(this); // Initialize your database helper
+
+        // Set an OnClickListener on the scan barcode button
         btnScanBarcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -40,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Set an OnClickListener on the show data button
         btnShowData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,8 +53,28 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // Set an OnClickListener on the save button
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Assuming you have logic to get the scanned product details
+                String scannedProductName = "Sample Product";  // Replace with actual scanned product name
+                int scannedQuantity = 1; // Replace with actual scanned quantity
+
+                // Call method to update product quantity
+                boolean isUpdated = dbHelper.insertOrUpdateProduct(scannedProductName, scannedQuantity);
+                // Notify the user about the success or failure of the update
+                if (isUpdated) {
+                    Toast.makeText(MainActivity.this, "Product list updated!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "Update failed. Please try again!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
+    // Barcode scanner result handling
     private ActivityResultLauncher<Intent> scanBarcodeLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -58,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
                     if (data != null && data.hasExtra("intentData")) {
                         String intentData = data.getStringExtra("intentData");
 
-                        // Check if the item already exists
                         if (dbHelper.itemExists(intentData)) {
                             // Get the current quantity and increment it
                             int currentQuantity = dbHelper.getItemQuantity(intentData);
@@ -68,14 +92,15 @@ public class MainActivity extends AppCompatActivity {
                             dbHelper.insertTransaction(intentData, 1);
                         }
 
+
                         scannedBarcodes.add(intentData);
                         updateResultText();
-                        Toast.makeText(MainActivity.this, intentData + " scanned", Toast.LENGTH_LONG).show();
                     }
                 }
             }
     );
 
+    // Update result text to show scanned barcodes
     private void updateResultText() {
         StringBuilder sb = new StringBuilder();
         for (String barcode : scannedBarcodes) {
@@ -84,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
         resultText.setText(sb.toString());
     }
 
+    // Display all data from the database
     private void displayAllData() {
         Cursor cursor = dbHelper.getAllTransactions();
         if (cursor.getCount() == 0) {

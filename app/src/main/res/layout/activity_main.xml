@@ -44,5 +44,7 @@
         android:textSize="16sp"
         android:textStyle="bold" />
 
+    <include layout="@layout/transaction_details"
+        android:visibility="gone"/>
 
 </LinearLayout>

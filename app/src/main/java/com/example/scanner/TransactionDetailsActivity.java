@@ -1,5 +1,6 @@
 package com.example.scanner;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -18,12 +19,22 @@ public class TransactionDetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.transaction_details); // Link to the new layout
+        setContentView(R.layout.transaction_details);
 
         tableLayout = findViewById(R.id.tableLayout); // Reference to the TableLayout in the layout file
         dbHelper = new DatabaseHelper(this);
 
         loadDataIntoTable(); // Load and populate the table with data
+
+        // Find the button in the layout
+        View goToProductListButton = findViewById(R.id.goToProductListButton);
+
+        // Set an OnClickListener for the button
+        goToProductListButton.setOnClickListener(v -> {
+            // Create an Intent to navigate to ProductListActivity
+            Intent intent = new Intent(TransactionDetailsActivity.this, ProductListActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void loadDataIntoTable() {
@@ -60,18 +71,16 @@ public class TransactionDetailsActivity extends AppCompatActivity {
             tableRow.addView(quantityText);
 
             // Trashcan Icon (Delete)
-//            ImageView deleteIcon = new ImageView(this);
-//            deleteIcon.setImageResource(R.drawable.baseline_delete_24); // Ensure you have the delete icon
-//            deleteIcon.setPadding(5, 5, 5, 5);
-//            deleteIcon.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    int idToDelete = cursor.getInt(0); // Get ID for deletion
-//                    dbHelper.deleteTransaction(idToDelete); // Implement this method in your DatabaseHelper
-//                    tableLayout.removeView(tableRow); // Remove the row from the table
-//                }
-//            });
-//            tableRow.addView(deleteIcon);
+            // Uncomment if delete functionality is implemented in DatabaseHelper
+            // ImageView deleteIcon = new ImageView(this);
+            // deleteIcon.setImageResource(R.drawable.baseline_delete_24); // Ensure you have the delete icon
+            // deleteIcon.setPadding(5, 5, 5, 5);
+            // deleteIcon.setOnClickListener(v -> {
+            //     int idToDelete = cursor.getInt(0); // Get ID for deletion
+            //     dbHelper.deleteTransaction(idToDelete); // Implement this method in your DatabaseHelper
+            //     tableLayout.removeView(tableRow); // Remove the row from the table
+            // });
+            // tableRow.addView(deleteIcon);
 
             // Add the TableRow to the TableLayout
             tableLayout.addView(tableRow);
