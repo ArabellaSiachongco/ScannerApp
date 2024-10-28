@@ -5,67 +5,79 @@ import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.ViewHolder> {
 
     private Context context;
     private Cursor cursor;
+    private OnProductActionListener actionListener;
 
-    // Constructor accepting a context and a cursor
-    public ProductListAdapter(Context context, Cursor cursor) {
+    // Constructor with context, cursor, and action listener
+    public ProductListAdapter(Context context, Cursor cursor, OnProductActionListener actionListener) {
         this.context = context;
         this.cursor = cursor;
+        this.actionListener = actionListener;
     }
 
+    // Define the interface for edit and delete actions
+    public interface OnProductActionListener {
+        void onEditClick(int position, int productId);
+        void onDeleteClick(int position, int productId);
+    }
+
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // Inflate the item layout for each row in the RecyclerView
-        View view = LayoutInflater.from(context).inflate(R.layout.product_item, parent, false); // Use product_item.xml
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.product_item, parent, false);
         return new ViewHolder(view);
     }
 
-
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        // Move the cursor to the right position
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (!cursor.moveToPosition(position)) {
-            return; // Exit if the cursor cannot move to the specified position
+            return;
         }
 
-        // Retrieve data from the cursor for the current row
-        int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));  // assuming column name is "id"
-        String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));  // assuming column name is "name"
-        int quantity = cursor.getInt(cursor.getColumnIndexOrThrow("quantity"));  // assuming column name is "quantity"
+        // Retrieve data from cursor
+        int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
+        String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
+        int quantity = cursor.getInt(cursor.getColumnIndexOrThrow("quantity"));
 
         // Bind data to the views in the ViewHolder
         holder.productIdTextView.setText(String.valueOf(id));
         holder.productNameTextView.setText(name);
         holder.productQuantityTextView.setText(String.valueOf(quantity));
+
+        // Set listeners for edit and delete icons
+        holder.editIcon.setOnClickListener(v -> actionListener.onEditClick(position, id));
+        holder.deleteIcon.setOnClickListener(v -> actionListener.onDeleteClick(position, id));
     }
 
     @Override
     public int getItemCount() {
-        // Return the total number of rows in the cursor
         return cursor != null ? cursor.getCount() : 0;
     }
 
     // ViewHolder class to hold references to each item’s views
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView productIdTextView;
-        public TextView productNameTextView;
-        public TextView productQuantityTextView;
+        TextView productIdTextView, productNameTextView, productQuantityTextView;
+        ImageView editIcon, deleteIcon;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             productIdTextView = itemView.findViewById(R.id.productIdTextView);
             productNameTextView = itemView.findViewById(R.id.productNameTextView);
             productQuantityTextView = itemView.findViewById(R.id.productQuantityTextView);
+            editIcon = itemView.findViewById(R.id.editIcon);
+            deleteIcon = itemView.findViewById(R.id.deleteIcon);
         }
     }
 
-    // Method to swap a new cursor in case data is updated
+    // Method to update the cursor when data changes
     public void swapCursor(Cursor newCursor) {
         if (cursor != null) {
             cursor.close();
